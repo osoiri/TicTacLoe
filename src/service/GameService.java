@@ -44,11 +44,14 @@ public class GameService {
 
         if (game.getWinner() != null) {
             game.setState(GameState.COMPLETE);
+        } else if (game.incrementTurnCount() == 9) {
+            game.setState(GameState.DRAW);
         }
     }
 
     public void undoUserGame(Game game) {
         game.getMoveHistory().pop().setCellStatus(CellStatus.EMPTY);
+        game.decrementTurnCount();
     }
 
     public void rotateCurrentPlayer(Game game) {

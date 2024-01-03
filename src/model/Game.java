@@ -13,6 +13,7 @@ public class Game {
     private GameState state;
     private int currentPlayer;
     private Player winner;
+    private int turnCount;
 
     private Game(Builder builder) {
         this.players = builder.players;
@@ -20,6 +21,15 @@ public class Game {
         this.moveHistory = new Stack<>();
         this.state = GameState.NEW;
         this.currentPlayer = 0;
+        this.turnCount = 0;
+    }
+
+    public int incrementTurnCount() {
+        return ++this.turnCount;
+    }
+
+    public int decrementTurnCount() {
+        return --this.turnCount;
     }
 
     public Player getWinner() {

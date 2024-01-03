@@ -38,7 +38,7 @@ public class Main {
             controller = new GameController(userId, symbol, userIdTwo, symbolTwo);
         }
 
-        while (controller.getGame().getState() != GameState.COMPLETE) {
+        while (true) {
             Game game = controller.getGame();
             System.out.println("Player " +
                     game.getCurrentPlayer().getUserId() +
@@ -51,7 +51,8 @@ public class Main {
                 continue;
             }
             System.out.println(game.getBoard());
-            if (controller.getGame().getState() == GameState.COMPLETE) {
+            if (controller.getGame().getState() == GameState.COMPLETE
+                    || controller.getGame().getState() == GameState.DRAW) {
                 break;
             }
             System.out.println("Do you want to undo last move? Enter \"y\" to confirm.");
@@ -67,7 +68,11 @@ public class Main {
             }
         }
 
-        System.out.println(controller.getGame().getWinner().getUserId() + " WINS >(-<>-)<");
+        if (controller.getGame().getState() == GameState.COMPLETE) {
+            System.out.println(controller.getGame().getWinner().getUserId() + " WINS >(^<>^)<");
+        } else {
+            System.out.println("DRAW ----------> ,(-+-),");
+        }
 
         sc.close();
     }
