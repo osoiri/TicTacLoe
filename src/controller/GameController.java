@@ -15,10 +15,11 @@ public class GameController {
     public GameService service;
     private static final String BOT_ID = "TICTACBOT";
     private static final String BOT_SYMBOL = "+";
+    private static final String BOT_ALTERNATE_SYMBOL = "B";
 
     public GameController(String userId, String symbol) {
         final Player playerOne = new Player(userId, symbol, PlayerType.HUMAN);
-        final Player playerTwo = new Player(BOT_ID, BOT_SYMBOL, PlayerType.BOT);
+        final Player playerTwo = new Player(BOT_ID, BOT_SYMBOL.equals(symbol) ? BOT_ALTERNATE_SYMBOL: BOT_SYMBOL, PlayerType.BOT);
         this. game = Game.getBuilder()
                 .setPlayers(
                         Arrays.asList(playerOne, playerTwo)
@@ -51,11 +52,11 @@ public class GameController {
     public String rotateCurrentPlayer() {
         String botStatement = null;
         service.rotateCurrentPlayer(game);
-        if (game.getPlayers().get(game.getCurrentPlayer()).getPlayerType() == PlayerType.BOT) {
+        if (game.getCurrentPlayer().getPlayerType() == PlayerType.BOT) {
             int x = service.getBotMove(game);
             service.executeOneTurn(x, game);
-            botStatement = "Player"
-                    + game.getPlayers().get(game.getCurrentPlayer()).getUserId()
+            botStatement = "Player "
+                    + game.getCurrentPlayer().getUserId()
                     + " Enter Cell between 1 to 9\n"
                     + x
                     +"\n"

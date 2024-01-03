@@ -1,7 +1,7 @@
 package strategy;
 
-import model.Board;
+import model.Game;
 
 public interface WinningStrategy {
-    void check(int x, Board board);
+    void check(int row, int col, Game game);
 }

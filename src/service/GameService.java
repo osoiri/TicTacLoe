@@ -1,7 +1,7 @@
 package service;
 
-import controller.GameController;
 import exception.ServiceException;
+import factory.WinningFactory;
 import model.Cell;
 import model.CellStatus;
 import model.Game;
@@ -13,6 +13,12 @@ import java.util.List;
  * Service class for processing one turn of game.
  */
 public class GameService {
+    private final WinningFactory winningFactory;
+
+    public GameService() {
+        this.winningFactory = new WinningFactory();
+    }
+
     /**
      * Check Cell available, then update Cell and MoveHistory, then check
      * player won, then mark game complete.
@@ -27,11 +33,18 @@ public class GameService {
 
         final Cell cell = game.getBoard().getCellAvailable(x);
         cell.setCellStatus(CellStatus.OCCUPIED);
-        cell.setPlayer(game.getPlayers().get(game.getCurrentPlayer()));
+        cell.setPlayer(game.getCurrentPlayer());
 
         game.getMoveHistory().add(cell);
 
+        winningFactory.getWinningStrategies(cell.getRow(), cell.getCol())
+                .forEach(strategy -> {
+                    strategy.check(cell.getRow(), cell.getCol(), game);
+                });
 
+        if (game.getWinner() != null) {
+            game.setState(GameState.COMPLETE);
+        }
     }
 
     public void undoUserGame(Game game) {
@@ -39,7 +52,7 @@ public class GameService {
     }
 
     public void rotateCurrentPlayer(Game game) {
-        game.setCurrentPlayer((game.getCurrentPlayer() + 1)%2);
+        game.setCurrentPlayer((game.getCurrentPlayerPosition() + 1)%2);
     }
 
     public int getBotMove(Game game) {

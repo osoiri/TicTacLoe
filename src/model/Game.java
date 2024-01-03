@@ -22,8 +22,8 @@ public class Game {
         this.currentPlayer = 0;
     }
 
-    public String getWinner() {
-        return winner.getUserId();
+    public Player getWinner() {
+        return winner;
     }
 
     public List<Player> getPlayers() {
@@ -42,8 +42,12 @@ public class Game {
         return state;
     }
 
-    public int getCurrentPlayer() {
-        return currentPlayer;
+    public Player getCurrentPlayer() {
+        return this.players.get(this.currentPlayer);
+    }
+
+    public int getCurrentPlayerPosition() {
+        return this.currentPlayer;
     }
 
     public void setState(GameState state) {

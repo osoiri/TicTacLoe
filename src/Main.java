@@ -40,8 +40,8 @@ public class Main {
 
         while (controller.getGame().getState() != GameState.COMPLETE) {
             Game game = controller.getGame();
-            System.out.println("Player" +
-                    game.getPlayers().get(game.getCurrentPlayer()).getUserId() +
+            System.out.println("Player " +
+                    game.getCurrentPlayer().getUserId() +
                     " Enter Cell between 1 to 9");
             int x = sc.nextInt();
             try {
@@ -51,6 +51,9 @@ public class Main {
                 continue;
             }
             System.out.println(game.getBoard());
+            if (controller.getGame().getState() == GameState.COMPLETE) {
+                break;
+            }
             System.out.println("Do you want to undo last move? Enter \"y\" to confirm.");
             String changeLastMove = sc.next();
             if ("y".equalsIgnoreCase(changeLastMove)) {
@@ -64,7 +67,7 @@ public class Main {
             }
         }
 
-        System.out.println("Player" + controller.getGame().getWinner() + " WINS >(-<>-)<");
+        System.out.println(controller.getGame().getWinner().getUserId() + " WINS >(-<>-)<");
 
         sc.close();
     }
